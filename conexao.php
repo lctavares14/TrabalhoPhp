@@ -6,11 +6,10 @@ define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 //inicio da classe de conexao
 class Conexao {
- var $db;
- var $conn;
+ var $db, $conn;
  public function __construct($server, $database, $username, $password){
- $this->$conn = mysql_connect($server, $username, $password);
- $this->$db = mysql_select_db($database,$this->$conn);
+ $this->conn = mysqli_connect($server, $username, $password);
+ $this->db = mysqli_select_db($this->conn,$database);
  }
 
 public function insert($tabela, $dados) {
@@ -28,7 +27,7 @@ public function insert($tabela, $dados) {
  public function select($tabela, $colunas = "*") {
     $sql = "SELECT $colunas FROM $tabela";
     $result = $this->executar($sql);
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    while ($row = mysqli_fetch_array($result)) {
         $return[] = $row;
     }
     return $return;
@@ -49,7 +48,7 @@ public function update($tabela, $colunaPrimay, $id, $dados) {
  }
 
  public function executar($sql){    
-     return mysql_query($sql,$this->conn);     
+     return mysqli_query($this->conn,$sql);     
  }
 }
 ?>
